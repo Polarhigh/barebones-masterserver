@@ -204,13 +204,8 @@ namespace Barebones.MasterServer
 
             // Generate a random key
             var aesKey = Msf.Helper.CreateRandomString(8);
-
-            var clientsPublicKeyXml = message.AsString();
-
-            // Deserialize public key
-            var sr = new System.IO.StringReader(clientsPublicKeyXml);
-            var xs = new System.Xml.Serialization.XmlSerializer(typeof(RSAParameters));
-            var clientsPublicKey = (RSAParameters)xs.Deserialize(sr);
+            
+            var clientsPublicKey = JsonUtility.FromJson<RSAParameters>(message.AsString());
 
             using (var csp = new RSACryptoServiceProvider())
             {

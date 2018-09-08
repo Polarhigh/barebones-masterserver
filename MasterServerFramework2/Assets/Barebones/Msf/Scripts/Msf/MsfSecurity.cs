@@ -98,12 +98,10 @@ namespace Barebones.MasterServer
             }
 
             // Serialize public key
-            var sw = new StringWriter();
-            var xs = new System.Xml.Serialization.XmlSerializer(typeof(RSAParameters));
-            xs.Serialize(sw, data.ClientsPublicKey);
+            string jsonPublicKey = JsonUtility.ToJson(data.ClientsPublicKey);
 
             // Send the request
-            connection.SendMessage((short)MsfOpCodes.AesKeyRequest, sw.ToString(), (status, response) =>
+            connection.SendMessage((short)MsfOpCodes.AesKeyRequest, jsonPublicKey, (status, response) =>
             {
                 if (data.ClientAesKey != null)
                 {
